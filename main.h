@@ -14,5 +14,6 @@ ssize_t getline(char **lineptr, size_t *n, FILE *stream);
 void executecmd(char **argv);
 char *get_file_location(char *command);
 int stat(const char *pathname, struct stat *statbuf);
+int tokenize(char **args, char *cmd);
 
 #endif /* MAIN_H */
