@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "main.h"
 
 char *get_file_location(char *command)
@@ -59,3 +60,70 @@ char *get_file_location(char *command)
 
     return (NULL);
 }
+=======
+#include "main.h"
+
+/**
+ * get_file_location - Get the location of the executable file
+ * @command: The name of the command
+ *
+ * Return: The location of the executable file
+ */
+char *get_file_location(char *command)
+{
+	char *path, *path_copy, *path_token, *file_path;
+	int cmd_length, dir_len;
+	struct stat buffer;
+
+	/* Get the value of the file path */
+	path = getenv("PATH");
+
+	if (path)
+	{
+		/* Make a copy of the file path */
+		path_copy = strdup(path);
+
+		/* Get length of the command */
+		cmd_length = strlen(command);
+
+		/* Break down path_copy variable into individual tokens */
+		path_token = strtok(path_copy, ":");
+
+		while (path_token != NULL)
+		{
+			dir_len = strlen(path_token);
+
+			file_path = malloc(cmd_length + dir_len + 2);
+
+			strcpy(file_path, path_token);
+			strcat(file_path, "/");
+			strcat(file_path, command);
+			strcat(file_path, "\0");
+
+			if (stat(file_path, &buffer) == 0)
+			{
+				/* Return value of 0 means success implying that the file_path is valid*/
+				/* Free up allocated memory before returning your file_path */
+				free(path_copy);
+				return (file_path);
+			}
+			else
+			{
+				free(file_path);
+				path_token = strtok(NULL, ":");
+			}
+		}
+
+		/* If we don't get any file_path that exists for the command, we return NULL but we need to free up memory for path_copy */
+		free(path_copy);
+
+		if (stat(command, &buffer) == 0)
+			return (command);
+
+		return (NULL);
+	}
+
+	return (NULL);
+}
+
+>>>>>>> af246cffb84fd34a28b8263c5a9f3058ef89330f
